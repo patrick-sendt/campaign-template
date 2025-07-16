@@ -31,6 +31,7 @@ export interface SmsVerifyParams {
 
 export interface SmsVerifyResponse {
     success: boolean;
+    valid: boolean;
     message?: string;
     data?: unknown;
 }
@@ -65,8 +66,23 @@ export const useSmsVerification = (options: UseSmsVerificationOptions = {}) => {
             setData(null);
 
             try {
+                // Format phone number for Dutch mobile numbers
+                let formattedPhone = params.phone.replace(/\s/g, ""); // Remove all spaces
+
+                // Handle Dutch mobile number formats
+                if (formattedPhone.startsWith("06")) {
+                    // Convert "06xxxxxxxx" to "316xxxxxxxx"
+                    formattedPhone = "31" + formattedPhone.substring(1);
+                } else if (formattedPhone.startsWith("+316")) {
+                    // Convert "+316xxxxxxxx" to "316xxxxxxxx"
+                    formattedPhone = formattedPhone.substring(1);
+                } else if (formattedPhone.startsWith("+31")) {
+                    // Convert "+31xxxxxxxxx" to "31xxxxxxxxx"
+                    formattedPhone = formattedPhone.substring(1);
+                }
+
                 const searchParams = new URLSearchParams({
-                    phone: params.phone,
+                    phone: formattedPhone,
                     firstname: params.firstname,
                     lastname: params.lastname,
                     aanhef: params.aanhef,
@@ -143,8 +159,12 @@ export const useSmsVerification = (options: UseSmsVerificationOptions = {}) => {
                 const result: SmsVerifyResponse = await response.json();
                 setVerifyData(result);
 
-                if (onVerifySuccess) {
-                    onVerifySuccess(result);
+                if (result.valid) {
+                    if (onVerifySuccess) {
+                        onVerifySuccess(result);
+                    }
+                } else {
+                    throw new Error("Invalid verification code");
                 }
 
                 return result;
