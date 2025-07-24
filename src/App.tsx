@@ -1,12 +1,10 @@
 import "./App.css";
-import { SignupProcessingComplete } from "./components/SignupProcessingComponents";
+import { CampaignSettingsBasic } from "./components/CampaignSettingsComponents";
 
 function App() {
     return (
         <>
-            <h1>This is some dummy text.</h1>
-
-            <SignupProcessingComplete />
+            <CampaignSettingsBasic />
         </>
     );
 }

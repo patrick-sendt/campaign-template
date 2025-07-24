@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { useSmsVerification, type CountryCode } from "@sendt-media/campaign";
+import { useCampaignSettings, useSmsVerification, useUrlParams, type CountryCode } from "@sendt-media/campaign";
 
 // Complete SMS verification flow component
 export const SMSVerificationComplete: React.FC = () => {
+    const { getParam } = useUrlParams();
+    const { getSetting } = useCampaignSettings();
+
     const [phone, setPhone] = useState("");
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [salutation, setSalutation] = useState("Mr");
-    const [campaignId, setCampaignId] = useState("");
+    const campaignId = getParam("campaign_id") || "";
     const [verificationCode, setVerificationCode] = useState("");
-    const [country, setCountry] = useState<CountryCode>("NL");
+    const country = getSetting("language") as CountryCode;
     const [sendResult, setSendResult] = useState<any>(null);
     const [verifyResult, setVerifyResult] = useState<any>(null);
 
@@ -73,20 +76,6 @@ export const SMSVerificationComplete: React.FC = () => {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "15px" }}>
                     <div>
                         <label>
-                            Country:
-                            <select
-                                value={country}
-                                onChange={(e) => setCountry(e.target.value as CountryCode)}
-                                style={{ marginLeft: "10px", padding: "5px" }}>
-                                <option value="NL">Netherlands (NL)</option>
-                                <option value="BE">Belgium (BE)</option>
-                                <option value="DE">Germany (DE)</option>
-                                <option value="FR">France (FR)</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div>
-                        <label>
                             Phone:
                             <input
                                 type="text"
@@ -132,18 +121,6 @@ export const SMSVerificationComplete: React.FC = () => {
                                 <option value="Mrs">Mrs</option>
                                 <option value="Ms">Ms</option>
                             </select>
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            Campaign ID:
-                            <input
-                                type="text"
-                                value={campaignId}
-                                onChange={(e) => setCampaignId(e.target.value)}
-                                placeholder="12345"
-                                style={{ marginLeft: "10px", padding: "5px" }}
-                            />
                         </label>
                     </div>
                 </div>

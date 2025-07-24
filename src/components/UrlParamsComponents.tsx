@@ -26,7 +26,7 @@ export const UrlParamsBasic: React.FC = () => {
             {/* Get specific parameter */}
             <div>
                 <h3>Campaign ID:</h3>
-                <p>{getParam("campaignId") || "Not found"}</p>
+                <p>{getParam("offer_id") || "Not found"}</p>
             </div>
 
             {/* Check if parameter exists */}

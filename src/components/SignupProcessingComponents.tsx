@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSignupProcessing, useUrlParams, type SignupData, type SignupQuestions } from "@sendt-media/campaign";
 
 // Complete signup processing component with full form
@@ -6,36 +6,7 @@ export const SignupProcessingComplete: React.FC = () => {
     const { getParam, getAllParams } = useUrlParams();
 
     // Form state
-    const [formData, setFormData] = useState<SignupData>({
-        email: "test@example.com",
-        firstname: "John",
-        lastname: "Doe",
-        lastname_prefix: "",
-        gender: "M",
-        birthdate: "1990-01-01",
-        address: "Main Street",
-        city: "Amsterdam",
-        housenumber: "123",
-        housenumber_addition: "A",
-        postalcode: "1000AA",
-        province: "Noord-Holland",
-        phone: "+31612345678",
-        offer_id: getParam("offer_id"),
-        params: JSON.stringify(getAllParams()),
-        platform_id: getParam("pf_id"),
-        publisher_id: getParam("aff_id"),
-        transaction_id: getParam("transaction_id"),
-        sndt_adv_id: getParam("sndt_adv_id"),
-        ho_aff_click_id: "click123",
-        ho_aff_source: "source123",
-        ho_aff_sub_1: "sub1",
-        ho_aff_sub_2: "sub2",
-        ho_aff_sub_3: "sub3",
-        ho_aff_sub_4: "sub4",
-        ho_aff_sub_5: "sub5",
-        facebook_click_id: getParam("fbclid"),
-        google_click_id: "goog123",
-    });
+    const [formData, setFormData] = useState<Partial<SignupData>>({});
 
     const [questions, setQuestions] = useState<SignupQuestions>({
         "answers[huidige_energie_leverancier_nl]": "Energieleverancier: Vattenfall",
@@ -78,7 +49,36 @@ export const SignupProcessingComplete: React.FC = () => {
 
         try {
             await processSignup({
-                data: formData,
+                data: {
+                    email: formData.email ?? "",
+                    firstname: formData.firstname ?? "",
+                    lastname: formData.lastname ?? "",
+                    lastname_prefix: formData.lastname_prefix ?? "",
+                    gender: formData.gender ?? "",
+                    birthdate: formData.birthdate ?? "",
+                    address: formData.address ?? "",
+                    city: formData.city ?? "",
+                    housenumber: formData.housenumber ?? "",
+                    housenumber_addition: formData.housenumber_addition ?? "",
+                    postalcode: formData.postalcode ?? "",
+                    province: formData.province ?? "",
+                    phone: formData.phone ?? "",
+                    offer_id: getParam("offer_id") ?? "",
+                    params: JSON.stringify(getAllParams()),
+                    platform_id: getParam("pf_id") ?? "",
+                    publisher_id: getParam("aff_id") ?? "",
+                    transaction_id: getParam("transaction_id") ?? "",
+                    sndt_adv_id: getParam("sndt_adv_id") ?? "",
+                    ho_aff_click_id: getParam("ho_aff_click_id") ?? "",
+                    ho_aff_source: getParam("ho_aff_source") ?? "",
+                    ho_aff_sub_1: getParam("ho_aff_sub_1") ?? "",
+                    ho_aff_sub_2: getParam("ho_aff_sub_2") ?? "",
+                    ho_aff_sub_3: getParam("ho_aff_sub_3") ?? "",
+                    ho_aff_sub_4: getParam("ho_aff_sub_4") ?? "",
+                    ho_aff_sub_5: getParam("ho_aff_sub_5") ?? "",
+                    facebook_click_id: getParam("fbclid") ?? "",
+                    google_click_id: getParam("gclid") ?? "",
+                },
                 questions: questions,
                 redirectUrl: redirectUrl || undefined,
                 redirectTimeout: redirectTimeout,
