@@ -1,6 +1,6 @@
 # Campaign Template
 
-This repository provides a starter template for building new campaigns using the `@sendt-media/campaign` package. It includes standard form structure, validation, and hookup points for all necessary hooks and flows. Refer to the `src/components/` directory for examples on how to use each hook.
+This repository provides a starter template for building new campaigns using the `@sendt-media/campaign` package. It includes standard form structure, validation, and hookup points for all necessary hooks and flows. Refer to the `src/examples/` directory for examples on how to use each hook.
 
 ## Installation
 
@@ -24,6 +24,7 @@ This repository provides a starter template for building new campaigns using the
 my-campaign/
 ├── public/               # Static assets
 ├── src/
+│   ├── examples/         # Exmaples on how to use each hook
 │   ├── components/       # Reusable UI components
 │   ├── hooks/            # Custom hooks (if any)
 │   ├── pages/            # Campaign pages
@@ -123,8 +124,8 @@ export const CampaignPage: React.FC = () => {
 
     // Signup
     const { processSignup } = useSignupProcessing({
-        onSignupSuccess: () => {},
-        onSignupError: () => {},
+        onSuccess: () => {},
+        onError: () => {},
     });
 
     return (
