@@ -1,10 +1,9 @@
 import "./App.css";
-import { CampaignSettingsBasic } from "./components/CampaignSettingsComponents";
 
 function App() {
     return (
         <>
-            <CampaignSettingsBasic />
+            <h1>This is some dummy text.</h1>
         </>
     );
 }

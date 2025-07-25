@@ -4,10 +4,11 @@ import { usePostalCodeValidation, type CountryCode } from "@sendt-media/campaign
 // Basic postal code validation component with Pro6PP API
 export const PostalCodeValidationBasic: React.FC = () => {
     const [postalCode, setPostalCode] = useState("");
+    const [houseNumber, setHouseNumber] = useState("");
     const [country, setCountry] = useState<CountryCode>("NL");
     const [result, setResult] = useState<any>(null);
 
-    const { validatePostalcode, quickValidate, isValidFormat, getAddressData, isLoading, error, refresh } = usePostalCodeValidation({
+    const { validatePostalcode, validateHouseNumber, quickValidate, isValidFormat, getAddressData, isLoading, error, refresh } = usePostalCodeValidation({
         countryCode: country,
         onSuccess: (data) => {
             console.log("Validation successful:", data);
@@ -20,7 +21,12 @@ export const PostalCodeValidationBasic: React.FC = () => {
     });
 
     const handleValidate = async () => {
-        const data = await validatePostalcode(postalCode);
+        let data;
+        if (!houseNumber) {
+            data = await validatePostalcode(postalCode);
+        } else {
+            data = await validateHouseNumber(postalCode, houseNumber);
+        }
         setResult(data);
     };
 
@@ -56,6 +62,19 @@ export const PostalCodeValidationBasic: React.FC = () => {
                         value={postalCode}
                         onChange={(e) => setPostalCode(e.target.value)}
                         placeholder="e.g., 1068NM"
+                        style={{ marginLeft: "10px", padding: "5px" }}
+                    />
+                </label>
+            </div>
+
+            <div style={{ marginBottom: "15px" }}>
+                <label>
+                    House Number (optional):
+                    <input
+                        type="text"
+                        value={houseNumber}
+                        onChange={(e) => setHouseNumber(e.target.value)}
+                        placeholder="e.g., 42A"
                         style={{ marginLeft: "10px", padding: "5px" }}
                     />
                 </label>

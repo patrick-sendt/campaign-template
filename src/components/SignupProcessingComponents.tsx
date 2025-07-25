@@ -9,12 +9,12 @@ export const SignupProcessingComplete: React.FC = () => {
     const [formData, setFormData] = useState<Partial<SignupData>>({});
 
     const [questions, setQuestions] = useState<SignupQuestions>({
-        "answers[huidige_energie_leverancier_nl]": "Energieleverancier: Vattenfall",
-        "answers[gezinssamenstelling]": "Gezinssamenstelling: 2 volwassenen",
-        "answers[type_woning]": "Type woning: Appartement",
-        "answers[campaign_question]": "What is your interest?",
-        "answers[campaign_answer]": "Energy savings",
-        "answers[campagne]": "Energy Campaign 2024",
+        huidige_energie_leverancier_nl: "Energieleverancier: Vattenfall",
+        gezinssamenstelling: "Gezinssamenstelling: 2 volwassenen",
+        type_woning: "Type woning: Appartement",
+        campaign_question: "What is your interest?",
+        campaign_answer: "Energy savings",
+        campagne: "Energy Campaign 2024",
     });
 
     const [redirectUrl, setRedirectUrl] = useState("https://example.com/success");
@@ -22,25 +22,13 @@ export const SignupProcessingComplete: React.FC = () => {
 
     // Initialize the hook with callbacks
     const { processSignup, isLoading, error, refresh } = useSignupProcessing({
-        onSignupSuccess: (response) => {
+        onSuccess: (response) => {
             console.log("✅ Signup successful:", response);
             alert(`Signup successful! ID: ${response.id}, Conversion: ${response.conversion}`);
         },
-        onSignupError: (error) => {
+        onError: (error) => {
             console.error("❌ Signup failed:", error);
             alert(`Signup failed: ${error}`);
-        },
-        onQuestionsSuccess: () => {
-            console.log("✅ Questions processed successfully");
-        },
-        onQuestionsError: (error) => {
-            console.error("❌ Questions processing failed:", error);
-        },
-        onPartnerPixelSuccess: (pixelSrc) => {
-            console.log("✅ Partner pixel loaded:", pixelSrc);
-        },
-        onPartnerPixelError: (error) => {
-            console.error("❌ Partner pixel failed:", error);
         },
     });
 
@@ -132,6 +120,14 @@ export const SignupProcessingComplete: React.FC = () => {
                         placeholder="Email"
                         value={formData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
+                        required
+                        style={{ padding: "8px" }}
+                    />
+                    <input
+                        type="tel"
+                        placeholder="Phone"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange("phone", e.target.value)}
                         required
                         style={{ padding: "8px" }}
                     />
